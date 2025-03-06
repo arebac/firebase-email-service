@@ -1,3 +1,4 @@
+// filepath: /path/to/your/backend/server.js
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
@@ -9,7 +10,14 @@ dotenv.config(); // Load environment variables
 const db = admin.firestore();
 
 const app = express();
-app.use(cors());
+
+// Use CORS middleware
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
 app.use(express.json()); // Middleware to parse JSON
 
 // ✅ Nodemailer Transport (Use Gmail, SendGrid, or Mailgun)
