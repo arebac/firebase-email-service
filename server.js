@@ -27,8 +27,12 @@ app.use(
       }
     },
     credentials: true,
+    methods: "GET,POST,DELETE,OPTIONS",
+    allowedHeaders: "Content-Type,Authorization",
   })
 );
+
+app.options("*", cors());
 
 app.use(express.json()); // ✅ Middleware to parse JSON
 
