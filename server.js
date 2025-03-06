@@ -8,14 +8,12 @@ dotenv.config(); // Load environment variables
 
 const db = admin.firestore();
 
-const app = express();
+
 
 // Update CORS configuration to allow requests from both origins
-app.use(cors({
-  origin: ['http://localhost:5173', 'https://the-cube-waitlist.vercel.app'],
-  methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const app = express();
+app.use(cors({ origin: "*" })); // Allows requests from any frontend
+app.use(express.json()); // Middleware to parse JSON
 
 app.use(express.json()); // Middleware to parse JSON
 
