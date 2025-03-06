@@ -1,0 +1,16 @@
+{
+  "name": "firebase-email-service",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "cors": "^2.8.5",
+    "nodemailer": "^6.4.17",
+    "firebase-admin": "^9.4.2",
+    "dotenv": "^8.2.0"
+  }
+}
