@@ -1,4 +1,3 @@
-// filepath: /path/to/your/backend/server.js
 import express from "express";
 import cors from "cors";
 import nodemailer from "nodemailer";
@@ -11,7 +10,7 @@ const db = admin.firestore();
 
 const app = express();
 
-// Use CORS middleware
+// Update CORS configuration to allow requests from both origins
 app.use(cors({
   origin: ['http://localhost:5173', 'https://the-cube-waitlist.vercel.app'],
   methods: ['GET', 'POST', 'DELETE', 'OPTIONS'],
