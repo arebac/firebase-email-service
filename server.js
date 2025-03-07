@@ -82,23 +82,29 @@ const isDuplicateEntry = async (email) => {
 // ✅ Route to Add a New Entry
 app.post("/add-entry", async (req, res) => {
   const { email } = req.body;
+  const cleanedEmail = email?.trim(); // Remove spaces
 
-  if (!email || !validator.isEmail(email)) {
+  // Validate email format
+  if (!cleanedEmail || !validator.isEmail(cleanedEmail)) {
     return res.status(400).json({ error: "Invalid email format" });
   }
 
   try {
-    const isDuplicate = await isDuplicateEntry(email);
-    if (!isDuplicate) {
-      await db.collection("waitlist").add({ email });
-      await sendConfirmationEmail(email);
-      res.status(200).send(`Email sent to ${email}`);
-    } else {
-      res.status(409).send(`Duplicate entry detected, no email sent.`);
+    // Check if the email already exists in Firestore
+    const querySnapshot = await db.collection("waitlist").where("email", "==", cleanedEmail).get();
+
+    if (!querySnapshot.empty) {
+      return res.status(409).json({ error: "Duplicate email detected" }); // Send 409 if duplicate
     }
+
+    // Add the new email entry
+    await db.collection("waitlist").add({ email: cleanedEmail });
+    await sendConfirmationEmail(cleanedEmail);
+
+    res.status(200).json({ message: `Email sent to ${cleanedEmail}` });
   } catch (error) {
-    console.error("Error adding entry:", error);
-    res.status(500).send("Error adding entry");
+    console.error("Error adding entry:", error.message);
+    res.status(500).json({ error: "Error adding entry" });
   }
 });
 
